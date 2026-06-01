@@ -11,7 +11,7 @@ on:
     description: Runner to use for deployment
     required: false
     default: 'ubuntu-latest'
-   workingdirectory:
+   workingdir:
     type: string
     description: 'The working directory for Terraform commands'
     required: true
@@ -25,7 +25,7 @@ jobs:
   runs-on: inputs.runnername
   defaults:
    run:
-    working-directory: ${{inputs.workingdirectory}}
+    working-directory: ${{inputs.workingdir}}
   steps:
    - name: Checkout Code
      uses: actions/checkout@v6
@@ -45,6 +45,7 @@ jobs:
 
    - name: Terraform plan
      run: terraform plan -out=tfplan
+
 
    - name: Terraform-apply
      run: terraform apply -auto-approve tfplan
