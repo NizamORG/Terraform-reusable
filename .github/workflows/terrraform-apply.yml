@@ -1,0 +1,50 @@
+name: Terraform deployment
+on:
+ workflow_call:
+  inputs:
+   subscriptionid:
+    type: string
+    description: Subscrition ID to use for deployment
+    required: true
+   runnername:
+    type: string
+    description: Runner to use for deployment
+    required: false
+    default: 'ubuntu-latest'
+   workingdirectory:
+    type: string
+    description: 'The working directory for Terraform commands'
+    required: true
+
+permissions:
+ id-token: write
+ contents: read
+
+jobs:
+ Deployment:
+  runs-on: inputs.runnername
+  defaults:
+   run:
+    working-directory: ${{inputs.workingdirectory}}
+  steps:
+   - name: Checkout Code
+     uses: actions/checkout@v6
+     
+   - name: Azure Login
+     uses: azure/login@v2
+     with:
+      client-id: ${{vars.clientid}}
+      tenant-id: ${{vars.tenantid}}
+      subscription-id: ${{inputs.subscriptionid}}
+
+   - name: Setup Terraform
+     uses: hashicorp/setup-terraform@v3
+
+   - name: Terraform init
+     run: terraform init
+
+   - name: Terraform plan
+     run: terraform plan -out=tfplan
+
+   - name: Terraform-apply
+     run: terraform apply -auto-approve tfplan

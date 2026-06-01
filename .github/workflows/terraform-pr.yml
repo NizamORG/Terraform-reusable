@@ -1,35 +1,31 @@
 name: Terraform deployment
 on:
- pull_request:
-   types: [opened, synchronize, reopened, edited]
-   paths:
-    - ".github/workflows/terraform-pr.yml"
-    - "Deployment/**"
-    - "aks-deployment/**"
+ workflow_call:
+  inputs:
+   subscriptionid:
+    type: string
+    description: Subscrition ID to use for deployment
+    required: true
+   runnername:
+    type: string
+    description: Runner to use for deployment
+    required: false
+    default: 'ubuntu-latest'
+   workingdir:
+    type: string
+    description: 'The working directory for Terraform commands'
+    required: true
 
 permissions:
  id-token: write
  contents: read
 
-inputs:
- CLIENT_ID:
-  description: Client ID of service PRincipal/Identity
-  required: true
-  default: ''
- TF_WORKING_DIR:
-  description: 'The working directory for Terraform commands'
-  required: true
-  default: './Deployment'
-
-env:
- TF_WORKING_DIR: ./Deployment
-
 jobs:
  Deployment:
-  runs-on: ubuntu-latest
+  runs-on: inputs.runnername
   defaults:
    run:
-    working-directory: ${{env.TF_WORKING_DIR}}
+    working-directory: ${{inputs.workingdir}}
   steps:
    - name: Checkout Code
      uses: actions/checkout@v6
@@ -37,9 +33,9 @@ jobs:
    - name: Azure Login
      uses: azure/login@v2
      with:
-      client-id: ${{vars.CLIENT_ID}}
-      tenant-id: ${{vars.TENANT_ID}}
-      subscription-id: ${{vars.SUBSCRIPTION_ID}}
+      client-id: ${{vars.clientid}}
+      tenant-id: ${{vars.tenantid}}
+      subscription-id: ${{inputs.subscriptionid}}
 
    - name: Setup Terraform
      uses: hashicorp/setup-terraform@v3
