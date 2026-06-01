@@ -2,16 +2,16 @@ name: Terraform deployment
 on:
  workflow_call:
   inputs:
-   subscriptionid:
+   subscriptionId:
     type: string
     description: Subscrition ID to use for deployment
     required: true
-   runnername:
+   runnerName:
     type: string
     description: Runner to use for deployment
     required: false
     default: 'ubuntu-latest'
-   workingdirectory:
+   workingDirectory:
     type: string
     description: 'The working directory for Terraform commands'
     required: true
@@ -22,10 +22,10 @@ permissions:
 
 jobs:
  Deployment:
-  runs-on: inputs.runnername
+  runs-on: ${{inputs.runnerName}}
   defaults:
    run:
-    working-directory: ${{inputs.workingdirectory}}
+    working-directory: ${{inputs.workingDirectory}}
   steps:
    - name: Checkout Code
      uses: actions/checkout@v6
@@ -35,7 +35,7 @@ jobs:
      with:
       client-id: ${{vars.clientid}}
       tenant-id: ${{vars.tenantid}}
-      subscription-id: ${{inputs.subscriptionid}}
+      subscription-id: ${{inputs.subscriptionId}}
 
    - name: Setup Terraform
      uses: hashicorp/setup-terraform@v3
