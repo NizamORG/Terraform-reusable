@@ -33,8 +33,8 @@ jobs:
    - name: Azure Login
      uses: azure/login@v2
      with:
-      client-id: ${{vars.clientid}}
-      tenant-id: ${{vars.tenantid}}
+      client-id: ${{vars.CLIENT_ID}}
+      tenant-id: ${{vars.TENANT_ID}}
       subscription-id: ${{inputs.subscriptionId}}
 
    - name: Setup Terraform
