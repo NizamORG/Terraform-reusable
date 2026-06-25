@@ -19,19 +19,18 @@ on:
 jobs:
  Deployment:
   runs-on: ${{inputs.runnerName}}
+  env:
+    AZURE_PASSWORD: ${{ secrets.AZURE_PASSWORD }}
   defaults:
    run:
     working-directory: ${{inputs.workingDirectory}}
   steps:
    - name: Checkout Code
      uses: actions/checkout@v6
-     
+   - name: Add permissions
+     run: chmod +x .github/scripts/login.ps1
    - name: Azure Login
-     uses: azure/login@v2
-     with:
-      client-id: ${{vars.CLIENT_ID}}
-      tenant-id: ${{vars.TENANT_ID}}
-      subscription-id: ${{inputs.subscriptionId}}
+     run: ./.github/scripts/login.sh      
 
    - name: Setup Terraform
      uses: hashicorp/setup-terraform@v3
@@ -41,4 +40,5 @@ jobs:
 
    - name: Terraform plan
      run: terraform plan -out=tfplan
+
 
