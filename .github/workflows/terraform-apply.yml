@@ -42,7 +42,7 @@ jobs:
      run: terraform init
 
    - name: Terraform plan
-     run: terraform plan -out=tfplan
+     run: terraform plan ${{inputs.terraformArgs}} -out=tfplan
 
 
    - name: Terraform-apply
