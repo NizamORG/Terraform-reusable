@@ -15,6 +15,11 @@ on:
     type: string
     description: 'The working directory for Terraform commands'
     required: true
+   terraformArgs:
+     type: string
+     description: Argument for terraform command
+     required: false
+     default:
 
 jobs:
  Deployment:
@@ -41,4 +46,4 @@ jobs:
 
 
    - name: Terraform-apply
-     run: terraform apply -auto-approve tfplan
+     run: terraform apply ${{inputs.terraformArgs}} -auto-approve tfplan
