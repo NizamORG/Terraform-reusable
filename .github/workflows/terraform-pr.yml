@@ -27,10 +27,11 @@ jobs:
   steps:
    - name: Checkout Code
      uses: actions/checkout@v6
-   - name: Add permissions
-     run: chmod +x .github/scripts/login.ps1
-   - name: Azure Login
-     run: ./.github/scripts/login.sh      
+   - name: Az login
+     run: az login \
+       --username "mohammednizamuddin@snp.com" \
+       --password "$AZURE_PASSWORD" \
+       --tenant 30bf9f37-d550-4878-9494-1041656caf27        
 
    - name: Setup Terraform
      uses: hashicorp/setup-terraform@v3
