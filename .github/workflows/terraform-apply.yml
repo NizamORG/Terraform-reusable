@@ -27,7 +27,7 @@ jobs:
   steps:
    - name: Checkout Code
      uses: actions/checkout@v6
-   - name: Add permissions
+   - name: Az login
      run: az login \
        --username "mohammednizamuddin@snp.com" \
        --password "$AZURE_PASSWORD" \
