@@ -5,7 +5,7 @@ on:
    subscriptionId:
     type: string
     description: Subscrition ID to use for deployment
-    required: true
+    required: false
    runnerName:
     type: string
     description: Runner to use for deployment
